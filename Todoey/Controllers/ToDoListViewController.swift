@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class ToDoListViewController: UITableViewController {
+class ToDoListViewController: SwipeViewController {
 
     let realm = try! Realm()
     var toDoItems : Results<Item>?
@@ -33,6 +33,7 @@ class ToDoListViewController: UITableViewController {
 //            itemArray = items
 //            print(items)
 //        }
+        tableView.rowHeight = 80.0
     }
     
     // MARK: TableView data source methods
@@ -42,7 +43,7 @@ class ToDoListViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
         if let item = toDoItems?[indexPath.row] {
             cell.textLabel?.text = item.title
             cell.accessoryType = item.done ? .checkmark : .none
@@ -69,17 +70,6 @@ class ToDoListViewController: UITableViewController {
             }
         }
         
-        // Delete
-//        if let item = toDoItems?[indexPath.row] {
-//            do {
-//                try realm.write {
-//                    realm.delete(item)
-//                }
-//            }
-//            catch {
-//                print("Error saving done status \(error)")
-//            }
-//        }
         
         tableView.reloadData()
         
@@ -124,7 +114,23 @@ class ToDoListViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
+    // MARK: - Delete item
+    override func updateModel(at indexPath: IndexPath) {
+        // Delete
+        if let item = toDoItems?[indexPath.row] {
+            do {
+                try realm.write {
+                    realm.delete(item)
+                }
+            }
+            catch {
+                print("Error saving done status \(error)")
+            }
+        }
+    }
     
+    
+    // MARK: - Load items
     func loadItems() {
 
         toDoItems = selectedCategory?.items.sorted(byKeyPath: "title", ascending: true)
