@@ -37,6 +37,10 @@ class ToDoListViewController: SwipeViewController {
         title = selectedCategory?.name
         guard let colourHex = selectedCategory?.color else { fatalError() }
         updateNavBar(withHexCode: colourHex)
+        
+        
+        
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {        
@@ -54,8 +58,9 @@ class ToDoListViewController: SwipeViewController {
         navBar.barTintColor = navBarColor
         navBar.tintColor = ContrastColorOf(navBarColor, returnFlat: true)
         navBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor:ContrastColorOf(navBarColor, returnFlat: true)]
-        
+                
         searchBar.barTintColor = navBarColor
+
     }
     
     // MARK: TableView data source methods
@@ -72,6 +77,7 @@ class ToDoListViewController: SwipeViewController {
             if let colour = UIColor(hexString: selectedCategory!.color)?.darken(byPercentage: CGFloat(indexPath.row) / CGFloat(toDoItems!.count)) {
                 cell.backgroundColor = colour
                 cell.textLabel?.textColor = ContrastColorOf(colour, returnFlat: true)
+                cell.tintColor = ContrastColorOf(colour, returnFlat: true)
             }
             
             cell.accessoryType = item.done ? .checkmark : .none

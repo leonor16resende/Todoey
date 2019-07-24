@@ -25,6 +25,7 @@ class CategoryViewController: SwipeViewController {
         tableView.rowHeight = 80.0
         tableView.separatorStyle = .none
     }
+    
 
     // MARK: - TableView Datasource Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
